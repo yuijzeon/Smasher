@@ -7,7 +7,11 @@ namespace Smasher
     {
         protected void Application_Start()
         {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            GlobalConfiguration.Configure(config =>
+            {
+                AutofacConfig.Register(config);
+                WebApiConfig.Register(config);
+            });
         }
     }
 }

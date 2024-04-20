@@ -6,24 +6,44 @@ namespace Smasher.Controllers
 {
     public class DefaultController : ApiController
     {
+        private readonly IApiProxy _apiProxy;
+
+        public DefaultController(IApiProxy apiProxy)
+        {
+            _apiProxy = apiProxy;
+        }
+
         [HttpGet]
         public IHttpActionResult Crash()
         {
-            ThrowException();
+            _apiProxy.DoSomethingAsync();
             return Ok();
         }
 
         [HttpGet]
-        public IHttpActionResult NotCrash()
+        public IHttpActionResult NotCrashNoLog()
         {
-            Task.Run(ThrowException);
+            Task.Run(async () => await _apiProxy.DoSomethingAsync());
             return Ok();
         }
 
-        private static async Task ThrowException()
+        [HttpGet]
+        public IHttpActionResult NotCrashWithLog()
         {
-            await Task.Delay(1000);
-            throw new InvalidOperationException();
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await _apiProxy.DoSomethingAsync();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    // Don't Throw Exception!
+                }
+            });
+
+            return Ok();
         }
     }
 }
