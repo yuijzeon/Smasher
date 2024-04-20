@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Smasher.Controllers
 {
     public class DefaultController : ApiController
     {
         private readonly IApiProxy _apiProxy;
+        private readonly ILogger<DefaultController> _logger;
 
-        public DefaultController(IApiProxy apiProxy)
+        public DefaultController(IApiProxy apiProxy, ILogger<DefaultController> logger)
         {
             _apiProxy = apiProxy;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -38,7 +41,7 @@ namespace Smasher.Controllers
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    _logger.LogError("{Exception}", e.ToString());
                 }
             });
 
