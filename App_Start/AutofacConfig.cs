@@ -20,11 +20,8 @@ namespace Smasher
             builder.RegisterInstance(loggerFactory).As<ILoggerFactory>().SingleInstance();
             builder.RegisterGeneric(typeof(Logger<>)).As(typeof(ILogger<>)).SingleInstance();
 
-            builder.Register(x =>
-            {
-                var httpClient = new HttpClient();
-                return new ApiProxy(httpClient, x.Resolve<ILogger<ApiProxy>>());
-            }).As<IApiProxy>();
+            builder.RegisterInstance(HttpClientFactory.Create()).SingleInstance();
+            builder.RegisterType<ApiProxy>().As<IApiProxy>().InstancePerDependency();
 
             var container = builder.Build();
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
