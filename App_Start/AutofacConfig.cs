@@ -23,7 +23,7 @@ namespace Smasher
             builder.Register(x =>
             {
                 var httpClient = new HttpClient();
-                return new ApiProxy(httpClient);
+                return new ApiProxy(httpClient, x.Resolve<ILogger<ApiProxy>>());
             }).As<IApiProxy>();
 
             var container = builder.Build();

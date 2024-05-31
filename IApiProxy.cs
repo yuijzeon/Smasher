@@ -4,6 +4,7 @@ namespace Smasher
 {
     public interface IApiProxy
     {
-        Task DoSomethingAsync();
+        Task JustThrowException();
+        Task<string> DoSomethingAsync();
     }
 }
