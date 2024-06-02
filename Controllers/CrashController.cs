@@ -23,7 +23,6 @@ namespace Smasher.Controllers
             {
                 _apiProxy.JustThrowException();
 
-                // This line will print
                 _logger.LogInformation("Fire Task Success");
             }
             catch (Exception e)
